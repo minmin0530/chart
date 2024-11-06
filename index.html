@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>chart</title>
+        <style>
+            table {
+                background: #f4f4f4;
+                border-radius: 30px;
+                padding: 15px;
+                width: 500px;
+            }
+            th {
+                border-bottom: 1px solid #d4d4d4;
+            }
+
+
+            .gantt-chart {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 150px;
+  left: 50px;
+}
+
+/* タスク行 */
+.task-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* タスク名 */
+.task-name {
+  width: 100px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+/* タスクバー */
+.task-bar1 {
+  position: relative;
+  height: 20px;
+  background-color: #aaffbb;
+  width: 200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.task-bar2 {
+  position: relative;
+  height: 20px;
+  background-color: #ffaabb;
+  width: 200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.task-bar3 {
+  position: relative;
+  height: 20px;
+  background-color: #ccddff;
+  width: 200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.task-bar4 {
+  position: relative;
+  height: 20px;
+  background-color: #aaffff;
+  width: 200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* 左端のハンドル */
+.left-handle, .right-handle {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  background-color: #333;
+  cursor: ew-resize;
+}
+
+.left-handle {
+  left: 0;
+}
+
+.right-handle {
+  right: 0;
+}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Chart🗓️</h1>
+        </header>
+        <article>
+            <div class="gantt-chart">
+                <div class="task-row">
+                    <div class="task-name">Task 1</div>
+                    <div class="task-bar1">
+                        <div class="left-handle"></div>
+                        <div class="right-handle"></div>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <div class="task-name">Task 2</div>
+                    <div class="task-bar2">
+                        <div class="left-handle"></div>
+                        <div class="right-handle"></div>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <div class="task-name">Task 3</div>
+                    <div class="task-bar3">
+                        <div class="left-handle"></div>
+                        <div class="right-handle"></div>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <div class="task-name">Task 4</div>
+                    <div class="task-bar4">
+                        <div class="left-handle"></div>
+                        <div class="right-handle"></div>
+                    </div>
+                </div>
+            </div>    
+            <table>
+                <tr>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+                <tr>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                    <td>　</td>
+                </tr>
+            </table>
+        </article>
+        <footer>
+
+        </footer>
+        <script>
+
+for (const row of document.getElementsByClassName("task-row")) {
+// ドラッグ状態の変数
+let isDraggingLeft = false;
+let isDraggingRight = false;
+let initialX;
+let initialWidth;
+
+// 左ハンドルのドラッグ開始
+row.children[1].children[0].addEventListener('mousedown', (e) => {
+  isDraggingLeft = true;
+  initialX = e.clientX;
+  initialWidth = row.children[1].offsetWidth;
+  e.preventDefault();
+});
+
+// 右ハンドルのドラッグ開始
+row.children[1].children[1].addEventListener('mousedown', (e) => {
+  isDraggingRight = true;
+  initialX = e.clientX;
+  initialWidth = row.children[1].offsetWidth;
+  e.preventDefault();
+});
+
+// マウス移動でバーのサイズ変更
+document.addEventListener('mousemove', (e) => {
+  const taskBar = row.children[1];
+
+  if (isDraggingLeft) {
+    const delta = e.clientX - initialX;
+    taskBar.style.width = `${initialWidth - delta}px`;
+    taskBar.style.left = `${delta}px`;
+  }
+
+  if (isDraggingRight) {
+    const delta = e.clientX - initialX;
+    taskBar.style.width = `${initialWidth + delta}px`;
+  }
+});
+
+// ドラッグ終了
+document.addEventListener('mouseup', () => {
+  isDraggingLeft = false;
+  isDraggingRight = false;
+});
+}
+        </script>
+    </body>
+</html>
